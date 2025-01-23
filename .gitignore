@@ -6,3 +6,6 @@ backend/venv/
 
 # Ignore system files
 .DS_Store
+
+# Ignore DB
+backend/url_shortener.db
