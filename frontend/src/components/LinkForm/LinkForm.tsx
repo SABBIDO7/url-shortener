@@ -1,6 +1,12 @@
-import React, { useState, useEffect, useReducer } from 'react'
-import { TextField, Button, Grid, Typography } from '@mui/material'
+import React, { useReducer } from 'react'
+import { Grid, Typography, Paper, Box } from '@mui/material'
 import { createShortUrl } from '../../api'
+import UrlInputField from './LinkInputField'
+import NamedUrlField from './NamedLinkField'
+import MaxVisitsField from './MaxVisitsField'
+import ShortenButton from './ShortenButton'
+import ShortUrlDisplay from './ShortLinkDisplay'
+import ExpiryField from './expiryField'
 
 interface LinkFormData {
   original_url: string
@@ -14,17 +20,6 @@ interface LinkFormProps {
   showSnackbar: (message: string, severity: 'success' | 'error') => void
 }
 
-// Validation function (using a regular expression)
-const isValidUrl = (url: string): boolean => {
-  try {
-    new URL(url)
-    return true
-  } catch (_) {
-    return false
-  }
-}
-
-// State management with useReducer
 type FormState = {
   originalUrl: string
   expiresIn: string
@@ -90,6 +85,16 @@ const formReducer = (state: FormState, action: FormAction): FormState => {
   }
 }
 
+// Validation function moved here for easier access by child components
+const isValidUrl = (url: string): boolean => {
+  try {
+    new URL(url)
+    return true
+  } catch (_) {
+    return false
+  }
+}
+
 function LinkForm({ fetchUrls, showSnackbar }: LinkFormProps) {
   const [state, dispatch] = useReducer(formReducer, initialState)
 
@@ -123,55 +128,51 @@ function LinkForm({ fetchUrls, showSnackbar }: LinkFormProps) {
   }
 
   return (
-    <>
+    <Paper elevation={3} sx={{ p: 3, borderRadius: '16px' }}>
       <Grid container spacing={2} alignItems='center'>
-        <Grid item xs={12} sm={8}>
-          <TextField
-            fullWidth
-            label='Enter URL to shorten'
+        <Grid item xs={12}>
+          <UrlInputField
             value={state.originalUrl}
-            onChange={(e) =>
-              dispatch({ type: 'SET_ORIGINAL_URL', payload: e.target.value })
-            }
-            error={!state.isUrlValid && state.originalUrl !== ''}
-            helperText={
-              !state.isUrlValid && state.originalUrl !== ''
-                ? 'Invalid URL format'
-                : ''
+            isValid={state.isUrlValid}
+            onChange={(value) =>
+              dispatch({ type: 'SET_ORIGINAL_URL', payload: value })
             }
           />
         </Grid>
-        <Grid item xs={12} sm={2}>
-          <TextField
-            fullWidth
-            label='Expires In (seconds)'
-            type='number'
+        <Grid item xs={12} sm={4}>
+          <ExpiryField
             value={state.expiresIn}
-            onChange={(e) =>
-              dispatch({ type: 'SET_EXPIRES_IN', payload: e.target.value })
+            onChange={(value) =>
+              dispatch({ type: 'SET_EXPIRES_IN', payload: value })
             }
           />
         </Grid>
-        <Grid item xs={12} sm={2}>
-          <Button
-            variant='contained'
+        <Grid item xs={12} sm={4}>
+          <NamedUrlField
+            value={state.namedUrl}
+            onChange={(value) =>
+              dispatch({ type: 'SET_NAMED_URL', payload: value })
+            }
+          />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <MaxVisitsField
+            value={state.maxVisits}
+            onChange={(value) =>
+              dispatch({ type: 'SET_MAX_VISITS', payload: value })
+            }
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <ShortenButton
             onClick={handleCreateShortUrl}
             disabled={!state.isFormValid}
-          >
-            Shorten
-          </Button>
+          />
         </Grid>
       </Grid>
 
-      {state.shortUrl && (
-        <Typography variant='body1' style={{ marginTop: 10 }}>
-          Short URL:{' '}
-          <a href={state.shortUrl} target='_blank' rel='noopener noreferrer'>
-            {state.shortUrl}
-          </a>
-        </Typography>
-      )}
-    </>
+      <ShortUrlDisplay shortUrl={state.shortUrl} />
+    </Paper>
   )
 }
 
