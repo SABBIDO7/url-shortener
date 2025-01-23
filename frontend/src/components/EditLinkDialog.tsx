@@ -9,14 +9,14 @@ import {
 } from '@mui/material'
 import { Url } from '../types' // Import the type
 
-interface EditUrlDialogProps {
+interface EditLinkDialogProps {
   open: boolean
-  Url: Url | null
+  url: Url | null
   onClose: () => void
   onUpdate: (updatedUrl: Url) => void
 }
 
-function EditUrlDialog({ open, Url, onClose, onUpdate }: EditUrlDialogProps) {
+function EditLinkDialog({ open, url, onClose, onUpdate }: EditLinkDialogProps) {
   const [editUrlData, setEditUrlData] = React.useState<Url>({
     id: 0,
     short_code: '',
@@ -27,13 +27,18 @@ function EditUrlDialog({ open, Url, onClose, onUpdate }: EditUrlDialogProps) {
   })
 
   React.useEffect(() => {
-    if (Url) {
-      setEditUrlData(Url)
+    if (url) {
+      setEditUrlData({
+        ...url,
+        expires_in: url.expires_at
+          ? Math.round((new Date(url.expires_at).getTime() - Date.now()) / 1000)
+          : null,
+      })
     }
-  }, [Url])
+  }, [url])
 
   const handleInputChange = (
-    field: keyof Url,
+    field: keyof Url | 'expires_in',
     value: string | number | null
   ) => {
     setEditUrlData((prevData) => ({
@@ -65,10 +70,10 @@ function EditUrlDialog({ open, Url, onClose, onUpdate }: EditUrlDialogProps) {
           label='Expires In (seconds)'
           type='number'
           fullWidth
-          value={editUrlData?.expires_at || ''}
+          value={editUrlData?.expires_in || ''}
           onChange={(e) =>
             handleInputChange(
-              'expires_at',
+              'expires_in',
               e.target.value ? parseInt(e.target.value) : null
             )
           }
@@ -103,4 +108,4 @@ function EditUrlDialog({ open, Url, onClose, onUpdate }: EditUrlDialogProps) {
   )
 }
 
-export default EditUrlDialog
+export default EditLinkDialog

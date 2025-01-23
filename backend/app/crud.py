@@ -24,11 +24,19 @@ def update_url(db: Session, short_code: str, url_update: schemas.URLUpdate):
     db_url = get_url_by_short_code(db, short_code)
     if db_url:
         update_data = url_update.dict(exclude_unset=True)
-        if 'expires_in' in update_data and update_data['expires_in'] is not None:
-            update_data['expires_at'] = datetime.utcnow() + timedelta(seconds=update_data['expires_in'])
+
+        # handle expires_in
+        if 'expires_in' in update_data:
+            if update_data['expires_in'] is not None:
+                expires_at = datetime.utcnow() + timedelta(seconds=update_data['expires_in'])
+            else:
+                expires_at = None  # Handle case where expires_in is set to null
             del update_data['expires_in']
+            update_data['expires_at'] = expires_at
+
         for key, value in update_data.items():
             setattr(db_url, key, value)
+
         db.commit()
         db.refresh(db_url)
     return db_url
