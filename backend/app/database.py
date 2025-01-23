@@ -1,28 +1,14 @@
-from sqlalchemy import create_engine, Column, Integer, String, DateTime
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-import datetime
+from sqlmodel import create_engine, SQLModel, Session # type: ignore
+from .models import URL
 
 DATABASE_URL = "sqlite:///./url_shortener.db"
-
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-Base = declarative_base()
-
-class URLModel(Base):
-    __tablename__ = "urls"
-
-    id = Column(Integer, primary_key=True, index=True)
-    original_url = Column(String, index=True)
-    short_code = Column(String, unique=True, index=True)
-    created_at = Column(DateTime, default=datetime.datetime.utcnow)
-    clicks = Column(Integer, default=0)
-
-Base.metadata.create_all(bind=engine)
+def create_db_and_tables():
+    SQLModel.metadata.create_all(engine)
 
 def get_db():
-    db = SessionLocal()
+    db = Session(engine)
     try:
         yield db
     finally:
