@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useReducer } from 'react'
 import { TextField, Button, Grid, Typography } from '@mui/material'
-import { createShortUrl } from '../api'
+import { createShortUrl } from '../../api'
 
 interface LinkFormData {
   original_url: string

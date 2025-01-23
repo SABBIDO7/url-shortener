@@ -6,8 +6,8 @@ import {
   Divider,
   ListItemButton,
 } from '@mui/material'
-import { deleteUrl, updateUrl } from '../api'
-import { Url } from '../types' // Import the type
+import { deleteUrl, updateUrl } from '../../api'
+import { Url } from '../../types' // Import the type
 import EditLinkDialog from './EditLinkDialog'
 
 interface LinkListItemProps {
