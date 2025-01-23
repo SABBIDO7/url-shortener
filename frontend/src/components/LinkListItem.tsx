@@ -1,5 +1,11 @@
 import React from 'react'
-import { ListItem, ListItemText, Button } from '@mui/material'
+import {
+  ListItem,
+  ListItemText,
+  Button,
+  Divider,
+  ListItemButton,
+} from '@mui/material'
 import { deleteUrl, updateUrl } from '../api'
 import { Url } from '../types' // Import the type
 import EditLinkDialog from './EditLinkDialog'
@@ -40,23 +46,63 @@ function LinkListItem({ url, fetchUrls, showSnackbar }: LinkListItemProps) {
       showSnackbar('Error updating URL', 'error')
     }
   }
+  const openLink = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation()
+    window.open(`${window.location.origin}/go/${url.short_code}`, '_blank')
+  }
 
   return (
-    <ListItem>
-      <ListItemText
-        primary={`${window.location.origin}/go/${url.short_code}`}
-        secondary={`Original: ${url.original_url}, Visits: ${url.visits}`}
-      />
-      <Button onClick={handleOpenEditDialog}>Edit</Button>
-
-      <Button onClick={handleDelete}>Delete</Button>
+    <>
+      <ListItem
+        component={ListItemButton}
+        onDoubleClick={openLink}
+        sx={{
+          '&:hover': {
+            bgcolor: 'action.hover',
+          },
+        }}
+      >
+        <ListItemText
+          primary={`${window.location.origin}/go/${url.short_code}`}
+          secondary={`Original: ${url.original_url}, Visits: ${url.visits}`}
+          sx={{
+            pr: 2,
+            '& .MuiListItemText-primary': {
+              fontWeight: 'bold',
+              color: 'primary.main',
+            },
+          }}
+        />
+        <Button
+          variant='outlined'
+          onClick={(event) => {
+            event.stopPropagation()
+            handleOpenEditDialog()
+          }}
+          sx={{ ml: 1 }}
+        >
+          Edit
+        </Button>
+        <Button
+          variant='outlined'
+          color='error'
+          onClick={(event) => {
+            event.stopPropagation()
+            handleDelete()
+          }}
+          sx={{ ml: 1 }}
+        >
+          Delete
+        </Button>
+      </ListItem>
       <EditLinkDialog
         open={editDialogOpen}
         url={url}
         onClose={handleCloseEditDialog}
         onUpdate={handleUpdateUrl}
       />
-    </ListItem>
+      <Divider />
+    </>
   )
 }
 
