@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from app.models import URL
+from app.models.url_model import URL
 
 
 def test_get_all_urls(db_session, test_client):

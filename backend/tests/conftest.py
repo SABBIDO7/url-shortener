@@ -4,8 +4,8 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 from fastapi.testclient import TestClient
 from app.main import app
-from app.database import Base, get_db
-from app import models
+from database import Base, get_db
+#from backend.app.models import url_model
 
 # SQLite database URL for testing
 SQLITE_DATABASE_URL = "sqlite:///./test_db.db"
@@ -56,5 +56,5 @@ def url_entry(request):
     short_code = request.param["short_code"]
     original_url = request.param["original_url"]
 
-    url = models.URL(short_code=short_code, original_url=original_url)
+    url = url.URL(short_code=short_code, original_url=original_url)
     return url

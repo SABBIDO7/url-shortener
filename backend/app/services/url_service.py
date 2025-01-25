@@ -1,29 +1,30 @@
 from sqlalchemy.orm import Session
-from . import models, schemas
-from .utils import generate_short_code
+from ..schemas import url
+from app.models import url_model
+from utils import generate_short_code
 from datetime import datetime, timedelta, timezone
 
-def create_url(db: Session, url: schemas.URLCreate):
+def create_url(db: Session, url: url.URLCreate):
     short_code = generate_short_code(db)
     expires_at = datetime.now(timezone.utc) + timedelta(seconds=url.expires_in) if url.expires_in else None
     original_url_str = str(url.original_url) 
 
-    db_url = models.URL(original_url=original_url_str, short_code=short_code, expires_at=expires_at, named_url=url.named_url, max_visits=url.max_visits)
+    db_url = url_model.URL(original_url=original_url_str, short_code=short_code, expires_at=expires_at, named_url=url.named_url, max_visits=url.max_visits)
     db.add(db_url)
     db.commit()
     db.refresh(db_url)
     return db_url
 
 def get_url_by_id(db: Session, id: int):
-    return db.query(models.URL).filter(models.URL.id == id).first()
+    return db.query(url_model.URL).filter(url_model.URL.id == id).first()
 
 def get_url_by_short_code(db: Session, short_code: str):
-    return db.query(models.URL).filter(models.URL.short_code == short_code).first()
+    return db.query(url_model.URL).filter(url_model.URL.short_code == short_code).first()
 
 def get_all_urls(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.URL).offset(skip).limit(limit).all()
+    return db.query(url_model.URL).offset(skip).limit(limit).all()
 
-def update_url(db: Session, id: int, url_update: schemas.URLUpdate):
+def update_url(db: Session, id: int, url_update: url.URLUpdate):
     db_url = get_url_by_id(db, id)
     if db_url:
         update_data = url_update.dict(exclude_unset=True)
@@ -44,7 +45,7 @@ def update_url(db: Session, id: int, url_update: schemas.URLUpdate):
         db.refresh(db_url)
     return db_url
 
-def increment_url_visits(db: Session, url: models.URL):
+def increment_url_visits(db: Session, url: url_model.URL):
     url.visits += 1
     db.commit()
 
