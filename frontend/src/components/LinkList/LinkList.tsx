@@ -1,7 +1,7 @@
 import React from 'react'
 import { List, Paper, Typography } from '@mui/material'
 import LinkListItem from './LinkListItem'
-import { Url } from '../types' // Import the type
+import { Url } from '../../types' // Import the type
 
 interface LinkListProps {
   allUrls: Url[]

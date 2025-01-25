@@ -21,7 +21,7 @@ function LinkListItem({ url, fetchUrls, showSnackbar }: LinkListItemProps) {
 
   const handleDelete = async () => {
     try {
-      await deleteUrl(url.short_code)
+      await deleteUrl(url.id)
       fetchUrls()
       showSnackbar('URL deleted successfully!', 'success')
     } catch (error) {
@@ -38,7 +38,7 @@ function LinkListItem({ url, fetchUrls, showSnackbar }: LinkListItemProps) {
   }
   const handleUpdateUrl = async (updatedUrl: Url) => {
     try {
-      await updateUrl(url.short_code, updatedUrl)
+      await updateUrl(url.id, updatedUrl)
       fetchUrls()
       showSnackbar('URL updated successfully!', 'success')
     } catch (error) {
@@ -63,7 +63,11 @@ function LinkListItem({ url, fetchUrls, showSnackbar }: LinkListItemProps) {
         }}
       >
         <ListItemText
-          primary={`${window.location.origin}/go/${url.short_code}`}
+          primary={
+            url.named_url
+              ? `${window.location.origin}/go/${url.short_code} (${url.named_url})`
+              : `${window.location.origin}/go/${url.short_code}`
+          }
           secondary={`Original: ${url.original_url}, Visits: ${url.visits}`}
           sx={{
             pr: 2,

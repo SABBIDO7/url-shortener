@@ -14,14 +14,17 @@ def create_url(db: Session, url: schemas.URLCreate):
     db.refresh(db_url)
     return db_url
 
+def get_url_by_id(db: Session, id: int):
+    return db.query(models.URL).filter(models.URL.id == id).first()
+
 def get_url_by_short_code(db: Session, short_code: str):
     return db.query(models.URL).filter(models.URL.short_code == short_code).first()
 
 def get_all_urls(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.URL).offset(skip).limit(limit).all()
 
-def update_url(db: Session, short_code: str, url_update: schemas.URLUpdate):
-    db_url = get_url_by_short_code(db, short_code)
+def update_url(db: Session, id: int, url_update: schemas.URLUpdate):
+    db_url = get_url_by_id(db, id)
     if db_url:
         update_data = url_update.dict(exclude_unset=True)
 
@@ -45,8 +48,8 @@ def increment_url_visits(db: Session, url: models.URL):
     url.visits += 1
     db.commit()
 
-def delete_url(db: Session, short_code: str):
-    db_url = get_url_by_short_code(db, short_code)
+def delete_url(db: Session, id: int):
+    db_url = get_url_by_id(db, id)
     if db_url:
         db.delete(db_url)
         db.commit()

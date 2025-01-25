@@ -1,7 +1,7 @@
 from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from . import crud, models, schemas
+from . import crud, schemas
 from .database import get_db
 from typing import List
 from fastapi.responses import RedirectResponse
@@ -32,16 +32,16 @@ async def redirect_to_original_url(short_code: str, db: Session = Depends(get_db
     crud.increment_url_visits(db, db_url)
     return RedirectResponse(url=db_url.original_url, status_code=307)
 
-@router.patch("/api/urls/{short_code}", response_model=schemas.URL)
-def update_url(short_code: str, url_update: schemas.URLUpdate, db: Session = Depends(get_db)):
-    updated_url = crud.update_url(db, short_code, url_update)
+@router.patch("/api/urls/{id}", response_model=schemas.URL)
+def update_url(id: int, url_update: schemas.URLUpdate, db: Session = Depends(get_db)):
+    updated_url = crud.update_url(db, id, url_update)
     if updated_url is None:
         raise HTTPException(status_code=404, detail="URL not found")
     return updated_url
 
-@router.delete("/api/urls/{short_code}", response_model=schemas.URL)
-def delete_url(short_code: str, db: Session = Depends(get_db)):
-    deleted_url = crud.delete_url(db, short_code)
+@router.delete("/api/urls/{id}", response_model=schemas.URL)
+def delete_url(id: int, db: Session = Depends(get_db)):
+    deleted_url = crud.delete_url(db, id)
     if deleted_url is None:
         raise HTTPException(status_code=404, detail="URL not found")
     return deleted_url

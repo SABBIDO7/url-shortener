@@ -1,6 +1,4 @@
-from datetime import datetime, timedelta
 import pytest
-import uuid
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
@@ -52,13 +50,7 @@ def test_client(db_session):
     with TestClient(app) as test_client:
         yield test_client
 
-@pytest.fixture()
-def url_payload(short_code='eqt23j'):
-    """Generate an updated user payload."""
-    expires_at = datetime.utcnow() + timedelta(seconds=2)
-    url = models.URL(id=1,original_url="https://facebook.com/", short_code=short_code, expires_at=expires_at, named_url='facebook', max_visits=5,created_at='2025-01-24T22:28:55.616Z',visits=0)
 
-    return url
 @pytest.fixture
 def url_entry(request):
     short_code = request.param["short_code"]

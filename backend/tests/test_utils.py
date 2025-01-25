@@ -1,8 +1,6 @@
-import pytest
 from app.utils import generate_short_code
-from tests.conftest import db_session  # Import your database fixture
 
-def test_generate_short_code_unique(db_session):  # Renamed for clarity
+def test_generate_short_code_unique(db_session):
     codes = set()
     for _ in range(10):  # Generate multiple codes
         code = generate_short_code(db_session)

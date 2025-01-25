@@ -85,7 +85,6 @@ const formReducer = (state: FormState, action: FormAction): FormState => {
   }
 }
 
-// Validation function moved here for easier access by child components
 const isValidUrl = (url: string): boolean => {
   try {
     new URL(url)

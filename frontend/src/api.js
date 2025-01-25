@@ -14,12 +14,12 @@ export const getAllUrls = async () => {
   return response.data
 }
 
-export const updateUrl = async (shortCode, urlData) => {
-  const response = await api.patch(`/urls/${shortCode}`, urlData)
+export const updateUrl = async (id, urlData) => {
+  const response = await api.patch(`/urls/${id}`, urlData)
   return response.data
 }
 
-export const deleteUrl = async (shortCode) => {
-  const response = await api.delete(`/urls/${shortCode}`)
+export const deleteUrl = async (id) => {
+  const response = await api.delete(`/urls/${id}`)
   return response.data
 }

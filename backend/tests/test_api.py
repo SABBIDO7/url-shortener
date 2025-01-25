@@ -1,27 +1,19 @@
-import pytest
-from fastapi.testclient import TestClient
-from fastapi import HTTPException
 from datetime import datetime, timedelta
-
 from app.models import URL
-
-
 
 
 def test_get_all_urls(db_session, test_client):
     # Add a test URL to the database
     url = URL(original_url="https://facebook.com/", short_code="sh90oi")
     db_session.add(url)
-    db_session.commit()  # Persist the URL to the database
+    db_session.commit()
 
     # Send a GET request to fetch all URLs
     response = test_client.get("/api/urls/")
-    assert response.status_code == 200  # Ensure the status code is 200 OK
-
+    assert response.status_code == 200
     # Parse the JSON response
     data = response.json()
 
-    # Assertions
     assert isinstance(data, list)  # Response is a list
     assert len(data) > 0  # The list is not empty
 
@@ -45,7 +37,6 @@ def test_create_url(test_client):  # Type hints added
 def test_create_url_invalid_url(test_client):
     response = test_client.post("/api/urls/", json={"original_url": "invalid-url"})
     assert response.status_code == 422  # Expect validation error
-
 
 
 def test_redirect_to_original_url(db_session,test_client):
@@ -80,9 +71,6 @@ def test_redirect_expired_url(test_client,db_session):
     assert response.json() == {"detail": "Short URL has expired"}
 
 
-
-# # More tests...  (e.g., update_url, delete_url, handling expires_at, named_url, etc.)
-# # Remember to use db_session to prepare the database for each test
 def test_update_url(test_client, db_session ):
     url = URL(original_url="https://facebook.com/", short_code="sh98ip")
     db_session.add(url)
@@ -92,7 +80,8 @@ def test_update_url(test_client, db_session ):
         "expires_in": 3600,
         "named_url": "facebook"
     }
-    response = test_client.patch(f"/api/urls/{url.short_code}", json=update_data)
+
+    response = test_client.patch(f"/api/urls/{url.id}", json=update_data)
     data=response.json()
 
     assert response.status_code == 200
@@ -106,7 +95,7 @@ def test_delete_url(test_client,db_session):
     url = URL(original_url="https://facebook.com/", short_code="sh98ic")
     db_session.add(url)
     db_session.commit()
-    response = test_client.delete(f"/api/urls/{url.short_code}")
+    response = test_client.delete(f"/api/urls/{url.id}")
     assert response.status_code == 200
 
 
