@@ -1,11 +1,11 @@
 from sqlalchemy.orm import Session
 from . import models, schemas
 from .utils import generate_short_code
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 def create_url(db: Session, url: schemas.URLCreate):
     short_code = generate_short_code(db)
-    expires_at = datetime.utcnow() + timedelta(seconds=url.expires_in) if url.expires_in else None
+    expires_at = datetime.now(timezone.utc) + timedelta(seconds=url.expires_in) if url.expires_in else None
     original_url_str = str(url.original_url) 
 
     db_url = models.URL(original_url=original_url_str, short_code=short_code, expires_at=expires_at, named_url=url.named_url, max_visits=url.max_visits)

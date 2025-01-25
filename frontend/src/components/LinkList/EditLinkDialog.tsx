@@ -7,7 +7,7 @@ import {
   DialogContent,
   DialogActions,
 } from '@mui/material'
-import { Url } from '../types' // Import the type
+import { Url } from '../../types' // Import the type
 
 interface EditLinkDialogProps {
   open: boolean
@@ -24,6 +24,7 @@ function EditLinkDialog({ open, url, onClose, onUpdate }: EditLinkDialogProps) {
     created_at: '',
     named_url: '',
     visits: 0,
+    expires_in: 0,
   })
 
   React.useEffect(() => {

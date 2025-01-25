@@ -1,10 +1,10 @@
 from datetime import datetime
-from fastapi import APIRouter, Depends, HTTPException, status # type: ignore
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from . import crud, models, schemas
 from .database import get_db
 from typing import List
-from fastapi.responses import RedirectResponse # type: ignore
+from fastapi.responses import RedirectResponse
 
 router = APIRouter()
 
@@ -20,7 +20,6 @@ def read_urls(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
 @router.get("/api/go/{short_code}")
 async def redirect_to_original_url(short_code: str, db: Session = Depends(get_db)):
     db_url = crud.get_url_by_short_code(db, short_code)
-
     if db_url is None:
         raise HTTPException(status_code=404, detail="Short URL not found")
 
@@ -31,7 +30,7 @@ async def redirect_to_original_url(short_code: str, db: Session = Depends(get_db
         raise HTTPException(status_code=403, detail="Usage limit exceeded for this short URL")
 
     crud.increment_url_visits(db, db_url)
-    return RedirectResponse(url=db_url.original_url)
+    return RedirectResponse(url=db_url.original_url, status_code=307)
 
 @router.patch("/api/urls/{short_code}", response_model=schemas.URL)
 def update_url(short_code: str, url_update: schemas.URLUpdate, db: Session = Depends(get_db)):
