@@ -5,10 +5,12 @@ import {
   Button,
   Divider,
   ListItemButton,
+  IconButton,
 } from '@mui/material'
 import { deleteUrl, updateUrl } from '../../api'
 import { Url } from '../../types' // Import the type
 import EditLinkDialog from './EditLinkDialog'
+import { ContentCopy } from '@mui/icons-material'
 
 interface LinkListItemProps {
   url: Url
@@ -50,6 +52,18 @@ function LinkListItem({ url, fetchUrls, showSnackbar }: LinkListItemProps) {
     event.stopPropagation()
     window.open(`${window.location.origin}/go/${url.short_code}`, '_blank')
   }
+  const handleCopyLink = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation()
+    const link = `${window.location.origin}/go/${url.short_code}`
+    navigator.clipboard
+      .writeText(link)
+      .then(() => {
+        showSnackbar('Link copied to clipboard!', 'success')
+      })
+      .catch(() => {
+        showSnackbar('Failed to copy the link.', 'error')
+      })
+  }
 
   return (
     <>
@@ -77,6 +91,13 @@ function LinkListItem({ url, fetchUrls, showSnackbar }: LinkListItemProps) {
             },
           }}
         />
+        <IconButton
+          aria-label='Copy link'
+          onClick={handleCopyLink}
+          sx={{ ml: 1 }}
+        >
+          <ContentCopy fontSize='small' />
+        </IconButton>
         <Button
           variant='outlined'
           onClick={(event) => {
