@@ -6,12 +6,13 @@ This is a simple URL shortener service built with a Python/FastAPI backend and a
 
 - Shorten long URLs
 - List all existing short URLs
-- Redirect to original URLs via short codes (on double clicking the item)
-- Error handling and notifications (snackbars)
+- Redirect to original URLs via short codes (when double clicking on the item)
+- Error handling and notifications (Snackbars)
 - Edit existing links (set expiration in seconds, named URLs, max usage)
 - Delete links
 - Collect and display usage statistics (number of Visits)
 - Make copy of the short link to clipboard
+- Responsiveness
 
 ## Technologies Used
 

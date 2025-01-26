@@ -22,7 +22,7 @@ def get_url_by_short_code(db: Session, short_code: str):
     return db.query(url_model.URL).filter(url_model.URL.short_code == short_code).first()
 
 def get_all_urls(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(url_model.URL).offset(skip).limit(limit).all()
+    return db.query(url_model.URL).order_by(url_model.URL.created_at.desc()).offset(skip).limit(limit).all()
 
 def update_url(db: Session, id: int, url_update: url.URLUpdate):
     db_url = get_url_by_id(db, id)
