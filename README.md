@@ -10,7 +10,7 @@ This is a simple URL shortener service built with a Python/FastAPI backend and a
 
 - Shorten long URLs
 - List all existing short URLs
-- Redirect to original URLs via short codes (when double clicking on the item)
+- Redirect to original URLs via short codes (when double clicking on the itemLink)
 - Error handling and notifications (Snackbars)
 - Edit existing links (set expiration in seconds, named URLs, max usage)
 - Delete links
@@ -18,46 +18,30 @@ This is a simple URL shortener service built with a Python/FastAPI backend and a
 - Make copy of the short link to clipboard
 - Responsiveness
 
-## Technologies Used
-
-- **Backend:**
-  - Python
-  - FastAPI
-  - SQLite
-  - SQLModel (ORM)
-  - Pytest
-- **Frontend:**
-  - React
-  - TSX
-  - Vite
-  - MUI (Material UI)
-  - Axios
-  - FormReducer
-- **Docker:**
-  - Dockerfile
-  - docker-compose
-
-## Project Structure
-
-- `backend/`: Contains the FastAPI backend code.
-  - `app/`: Main application logic, API routes in routers directory, models in models directory, schemas in schemas directory,crud operation with db in services directory.
-  - `tests/`: Pytest unit and integration tests.
-  - `Dockerfile`: Dockerfile for building the application image for backend api's and unit tests
-- `frontend/`: Contains the React frontend code.
-  - `public/`: Static assets (empty).
-  - `src/`: React components, API interaction logic.
-  - `Dockerfile`: Dockerfile for building the application image for running the frontend.
-- `docker-compose.yml`: Docker Compose configuration links the Dockerfile of the frontend and the backend one to run them as one container.
-
 ## Setup and Running
 
-### Prerequisites
+### Docker
+
+#### Prerequisites
+
+- Docker (for containerized deployment)
+
+1.  **Run Project**
+
+    - Navigate to the root project directory
+    - From the project root directory, run: `docker-compose up`
+    - This will start both the backend and frontend services `Container url-shortener-backend-1` and `Container url-shortener-frontend-1`.
+
+2.  **Run Tests**
+    - Navigate to the root project directory
+    - Run the command : `docker-compose exec backend pytest` (ensure that the docker is running first (docker compose up))
+
+### Local Development
+
+#### Prerequisites
 
 - Python 3.12
 - Node.js (with npm) v20.11.0
-- Docker (optional, for containerized deployment)
-
-### Local Development
 
 1. **Backend:**
 
@@ -82,20 +66,35 @@ This is a simple URL shortener service built with a Python/FastAPI backend and a
 2. Make sure you are in the virtual environment.
 3. Run tests using Pytest: `pytest`
 
-### Docker
+## Technologies Used
 
-1.  **Run Project**
+- **Backend:**
+  - Python
+  - FastAPI
+  - SQLite
+  - SQLModel (ORM)
+  - Pytest
+- **Frontend:**
+  - React
+  - TSX
+  - Vite
+  - MUI (Material UI)
+  - Axios
+- **Docker:**
+  - Dockerfile
+  - docker-compose
 
-    - Navigate to the root project directory
-    - Build the Docker image: `docker-compose build --no-cache`
-    - From the project root directory, run: `docker-compose up`
-    - This will start both the backend and frontend services `Container url-shortener-backend-1` and `Container url-shortener-frontend-1`.
-    - To stop the docker and the project from running run the command :
-      docker compose down
+## Project Structure
 
-2.  **Run Tests**
-    - Navigate to the root project directory
-    - Run the command : `docker-compose exec backend pytest` (ensure that the docker is running first (docker compose up))
+- `backend/`: Contains the FastAPI backend code.
+  - `app/`: Main application logic, API routes in routers directory, models in models directory, schemas in schemas directory,crud operation with db in services directory.
+  - `tests/`: Pytest unit and integration tests.
+  - `Dockerfile`: Dockerfile for building the application image for backend api's and unit tests
+- `frontend/`: Contains the React frontend code.
+  - `public/`: Static assets (empty).
+  - `src/`: React components, API interaction logic.
+  - `Dockerfile`: Dockerfile for building the application image for running the frontend.
+- `docker-compose.yml`: Docker Compose configuration links the Dockerfile of the frontend and the backend one to run them as one container.
 
 ## API Documentation
 
