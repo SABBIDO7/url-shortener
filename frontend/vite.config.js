@@ -1,13 +1,9 @@
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// Load environment variables from .env files
 export default defineConfig(({ mode }) => {
-  // Load environment variables based on the mode (development, production, etc.)
+  // Load environment variables from .env files based on the mode
   const env = loadEnv(mode, process.cwd())
-
-  // You can now access the environment variable
-  console.log(env.VITE_BACKEND_URL) // Will log the VITE_BACKEND_URL if it's set
 
   return {
     plugins: [react()],
@@ -17,7 +13,7 @@ export default defineConfig(({ mode }) => {
       host: true,
       proxy: {
         '/api': {
-          target: env.VITE_BACKEND_URL || 'http://localhost:8000', // Use env.VITE_BACKEND_URL
+          target: env.VITE_BACKEND_URL || 'http://localhost:8000',
           changeOrigin: true,
         },
       },

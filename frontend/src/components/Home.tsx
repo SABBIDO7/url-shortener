@@ -11,11 +11,11 @@ import { getAllUrls } from '../api'
 import LinkForm from './LinkForm/LinkForm'
 import LinkList from '../components/LinkList/LinkList'
 import SnackbarAlert from './SnackbarAlert'
-import { Url } from '../types' // Import the type
-import { Link as LinkIcon } from '@mui/icons-material' // Import an icon
+import { Url } from '../types'
+import { Link as LinkIcon } from '@mui/icons-material'
 
 function Home() {
-  const [allUrls, setAllUrls] = useState<Url[]>([]) // Type the state
+  const [allUrls, setAllUrls] = useState<Url[]>([])
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false)
   const [snackbarMessage, setSnackbarMessage] = useState<string>('')
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>(

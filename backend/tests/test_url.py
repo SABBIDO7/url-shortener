@@ -11,10 +11,9 @@ def test_get_all_urls(db_session, test_client):
     # Send a GET request to fetch all URLs
     response = test_client.get("/api/urls/")
     assert response.status_code == 200
-    # Parse the JSON response
     data = response.json()
 
-    assert isinstance(data, list)  # Response is a list
+    assert isinstance(data, list)
     assert len(data) > 0  # The list is not empty
 
     # Find the URL entry in the response
@@ -26,7 +25,7 @@ def test_get_all_urls(db_session, test_client):
 
 
 
-def test_create_url(test_client):  # Type hints added
+def test_create_url(test_client):
     response = test_client.post("/api/urls/", json={"original_url": "https://www.example.com"})
     assert response.status_code == 201
     data = response.json()

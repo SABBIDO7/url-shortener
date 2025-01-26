@@ -7,7 +7,7 @@ import {
   DialogContent,
   DialogActions,
 } from '@mui/material'
-import { Url } from '../../types' // Import the type
+import { Url } from '../../types'
 
 interface EditLinkDialogProps {
   open: boolean

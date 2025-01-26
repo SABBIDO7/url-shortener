@@ -5,7 +5,6 @@ from sqlalchemy.pool import StaticPool
 from fastapi.testclient import TestClient
 from app.main import app
 from database import Base, get_db
-#from backend.app.models import url_model
 
 # SQLite database URL for testing
 SQLITE_DATABASE_URL = "sqlite:///./test_db.db"

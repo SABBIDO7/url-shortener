@@ -1,4 +1,3 @@
-// types.ts
 export interface Url {
   id: number
   original_url: string

@@ -1,4 +1,3 @@
-# Use a base Python image
 FROM python:3.12
 
 # Set the working directory in the container
@@ -10,7 +9,7 @@ COPY . /backend/
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose the backend port (adjust as needed)
+# Expose the backend port
 EXPOSE 8000
 
 # Default command for running the backend

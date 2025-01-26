@@ -8,7 +8,7 @@ import {
   IconButton,
 } from '@mui/material'
 import { deleteUrl, updateUrl } from '../../api'
-import { Url } from '../../types' // Import the type
+import { Url } from '../../types'
 import EditLinkDialog from './EditLinkDialog'
 import { ContentCopy } from '@mui/icons-material'
 
