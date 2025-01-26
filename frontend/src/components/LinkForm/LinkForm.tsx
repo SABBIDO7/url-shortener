@@ -6,7 +6,7 @@ import NamedUrlField from './NamedLinkField'
 import MaxVisitsField from './MaxVisitsField'
 import ShortenButton from './ShortenButton'
 import ShortUrlDisplay from './ShortLinkDisplay'
-import ExpiryField from './expiryField'
+import ExpiryField from './ExpiryField'
 
 interface LinkFormData {
   original_url: string

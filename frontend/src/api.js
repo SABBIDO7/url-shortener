@@ -5,7 +5,7 @@ const api = axios.create({
 })
 
 export const createShortUrl = async (urlData) => {
-  const response = await api.post('/urls/', urlData) // Verify this line
+  const response = await api.post('/urls/', urlData)
   return response.data
 }
 
